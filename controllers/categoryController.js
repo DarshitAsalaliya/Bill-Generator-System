@@ -2,6 +2,8 @@ var express = require('express')
 var mongoose = require('mongoose');
 var multer = require('multer')
 var path = require('path');
+var Joi = require('joi');
+
 const fs = require('fs')
 
 var app = express();
@@ -36,6 +38,7 @@ var connection = require("../db/connection");
 
 // import model
 var CategoryModel = require('../models/categoryModel');
+const { response } = require('express');
 
 // get category list
 router.get('/:id?', function (req, res) {
@@ -46,14 +49,22 @@ router.get('/:id?', function (req, res) {
             console.log(err);
         else {
             if (!id) {
-                res.render('../views/admin/manage-category', { categoryList: data, categoryUpdateData: {} });
+                res.render('../views/admin/manage-category', {
+                    formDataError: [{
+                        context: { label: '' }
+                    }], categoryList: data, categoryUpdateData: {}
+                });
             }
             else {
                 CategoryModel.findById(id, function (err, singleCategoryData) {
                     if (err)
                         console.log(err);
                     else {
-                        res.render('../views/admin/manage-category', { categoryList: data, categoryUpdateData: singleCategoryData });
+                        res.render('../views/admin/manage-category', {
+                            formDataError: [{
+                                context: { label: '' }
+                            }], categoryList: data, categoryUpdateData: singleCategoryData
+                        });
                     }
                 });
             }
@@ -64,51 +75,63 @@ router.get('/:id?', function (req, res) {
 // add or update category
 router.post('/', upload.single('file'), function (req, res) {
 
-    var newCategory = new CategoryModel();
+    var joiresponse = Joi.object().keys({
+        CategoryName: Joi.string().required().label("Invalid.."),
+    }).validate({ CategoryName: req.body.CategoryName });
 
-    newCategory.CategoryName = req.body.CategoryName;
-    newCategory.CategoryStatus = req.body.CategoryStatus == "on" ? true : false;
-
-    console.log(req.body);
-    console.log(req.file);
-
-    if (!req.body.id) {
-        newCategory.FileName = req.file.filename;
-    }
-    else {
-        newCategory._id = req.body.id;
-
-        CategoryModel.findById(req.body.id, function (err, singleCategoryData) {
+    if (joiresponse.error) {
+        CategoryModel.find(function (err, data) {
             if (err)
                 console.log(err);
             else {
-                if (req.file) {
-                    if (fs.existsSync(path.join('./public/images/categoryimages/', singleCategoryData.FileName))) {
-                        fs.unlinkSync(path.join('./public/images/categoryimages/', singleCategoryData.FileName));
-                    }
-                }
+                res.render('../views/admin/manage-category', { formDataError: joiresponse.error.details, categoryList: data, categoryUpdateData: {} });
             }
-        });
-        if (req.file) {
-            newCategory.FileName = req.file.filename;
-        }
-    }
-
-    if (req.body.operation == "update") {
-        CategoryModel.findByIdAndUpdate(req.body.id, newCategory, function (err, data) {
-            if (err)
-                console.log(err);
-            else
-                res.redirect('/admin/category');
         });
     }
     else {
-        newCategory.save(function (err, data) {
-            if (err)
-                console.log(err);
-            else
-                res.redirect('/admin/category');
-        });
+        var newCategory = new CategoryModel();
+
+        newCategory.CategoryName = req.body.CategoryName;
+        newCategory.CategoryStatus = req.body.CategoryStatus == "on" ? true : false;
+
+        if (!req.body.id) {
+            newCategory.FileName = req.file.filename;
+        }
+        else {
+            newCategory._id = req.body.id;
+
+            CategoryModel.findById(req.body.id, function (err, singleCategoryData) {
+                if (err)
+                    console.log(err);
+                else {
+                    if (req.file) {
+                        if (fs.existsSync(path.join('./public/images/categoryimages/', singleCategoryData.FileName))) {
+                            fs.unlinkSync(path.join('./public/images/categoryimages/', singleCategoryData.FileName));
+                        }
+                    }
+                }
+            });
+            if (req.file) {
+                newCategory.FileName = req.file.filename;
+            }
+        }
+
+        if (req.body.operation == "update") {
+            CategoryModel.findByIdAndUpdate(req.body.id, newCategory, function (err, data) {
+                if (err)
+                    console.log(err);
+                else
+                    res.redirect('/admin/category');
+            });
+        }
+        else {
+            newCategory.save(function (err, data) {
+                if (err)
+                    console.log(err);
+                else
+                    res.redirect('/admin/category');
+            });
+        }
     }
 })
 

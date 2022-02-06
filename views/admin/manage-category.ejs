@@ -63,7 +63,7 @@
                                     <div class="card-body">
                                         <h4 class="card-title mb-4">Add New Category</h4>
 
-                                        <form method="post" action="/admin/category" enctype="multipart/form-data">
+                                        <form method="post" action="/admin/category/" enctype="multipart/form-data">
 
                                             <% if(categoryUpdateData.FileName){%>
                                                 <div class="row mb-4">
@@ -85,13 +85,16 @@
                                                             class="col-sm-3 col-form-label">Image</label>
                                                         <div class="col-sm-9">
                                                             <input type="file" class="form-control" id="file"
-                                                                name="file">
+                                                                name="file" <%=categoryUpdateData.id?"":"required" %>>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-4">
                                                         <label for="horizontal-firstname-input"
                                                             class="col-sm-3 col-form-label">Category</label>
                                                         <div class="col-sm-9">
+                                                            <font style="color: red;">
+                                                                <%= formDataError[0].context.label %>
+                                                            </font>
                                                             <input type="text" class="form-control" id="CategoryName"
                                                                 name="CategoryName"
                                                                 value="<%= categoryUpdateData.CategoryName %>" />
