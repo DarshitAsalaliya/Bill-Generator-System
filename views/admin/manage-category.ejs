@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
 
-
 <!-- Mirrored from themesbrand.com/skote/layouts/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Sep 2021 04:46:07 GMT -->
 
 <head>
@@ -11,8 +10,6 @@
 
     <%- include('config/datatablelinks'); %>
         <%- include('config/headerlinks'); %>
-
-
 
 </head>
 
@@ -26,8 +23,6 @@
         <header id="page-topbar">
             <div class="navbar-header">
                 <div class="d-flex">
-                    
-
                     <%- include('config/header'); %>
                 </div>
         </header>
@@ -68,35 +63,62 @@
                                     <div class="card-body">
                                         <h4 class="card-title mb-4">Add New Category</h4>
 
-                                        <form method="post" action="/admin/category">
-                                            <div class="row mb-4">
-                                                <label for="horizontal-firstname-input"
-                                                    class="col-sm-3 col-form-label">Category</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="CategoryName"
-                                                        name="CategoryName"
-                                                        value="<%= categoryUpdateData.CategoryName %>" />
-                                                </div>
-                                            </div>
-                                            <div class="row mb-4">
-                                                <label for="horizontal-email-input"
-                                                    class="col-sm-3 col-form-label">Status</label>
-                                                <div class="col-sm-9">
-                                                    <div class="form-check form-switch form-switch-lg mb-3 form-check-success"
-                                                        dir="ltr">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            id="CategoryStatus" name="CategoryStatus"
-                                                            <%=categoryUpdateData.CategoryStatus?"checked":""; %>>
+                                        <form method="post" action="/admin/category" enctype="multipart/form-data">
+
+                                            <% if(categoryUpdateData.FileName){%>
+                                                <div class="row mb-4">
+                                                    <label for="horizontal-firstname-input"
+                                                        class="col-sm-3 col-form-label">
+
+                                                    </label>
+                                                    <div class="col-sm-9">
+                                                        <img src="images/categoryimages/<%= categoryUpdateData.FileName %>"
+                                                            style="width:50px;height:50px;"/>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row justify-content-end">
-                                                <div class="col-sm-9">
-                                                    <div>
-                                                        <button type="submit" class="btn btn-primary w-md">Add</button>
+                                                <input type="hidden" value="<%= categoryUpdateData.id %>" name="id" />
+                                                <input type="hidden" value="update" name="operation" />
+                                                <%} %>
+
+                                                    <div class="row mb-4">
+                                                        <label for="horizontal-firstname-input"
+                                                            class="col-sm-3 col-form-label">Image</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="file" class="form-control" id="file"
+                                                                name="file">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                    <div class="row mb-4">
+                                                        <label for="horizontal-firstname-input"
+                                                            class="col-sm-3 col-form-label">Category</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" class="form-control" id="CategoryName"
+                                                                name="CategoryName"
+                                                                value="<%= categoryUpdateData.CategoryName %>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-4">
+                                                        <label for="horizontal-email-input"
+                                                            class="col-sm-3 col-form-label">Status</label>
+                                                        <div class="col-sm-9">
+                                                            <div class="form-check form-switch form-switch-lg mb-3 form-check-success"
+                                                                dir="ltr">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    id="CategoryStatus" name="CategoryStatus"
+                                                                    <%=categoryUpdateData.CategoryStatus?"checked":"";
+                                                                    %>>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row justify-content-end">
+                                                        <div class="col-sm-9">
+                                                            <div>
+                                                                <button type="submit" class="btn btn-primary w-md">
+                                                                    <%= categoryUpdateData.id?"Update":"Add" %>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                         </form>
                                     </div>
                                     <!-- end card body -->
@@ -113,16 +135,20 @@
                                         <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                                             <thead>
                                                 <tr>
+                                                    <th>Image</th>
                                                     <th>Name</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
-
                                                 </tr>
                                             </thead>
 
                                             <tbody>
                                                 <% categoryList.forEach(function(record){ %>
                                                     <tr>
+                                                        <td>
+                                                            <img src="images/categoryimages/<%= record.FileName %>"
+                                                                style="width:50px;height:50px;" />
+                                                        </td>
                                                         <td>
                                                             <%= record.CategoryName %>
                                                         </td>
@@ -137,7 +163,6 @@
                                                                 class="btn btn-danger btn-sm"><span
                                                                     class="bx bx-trash"></span></a>
                                                         </td>
-
                                                     </tr>
                                                     <% }); %>
                                             </tbody>
@@ -157,7 +182,7 @@
                 <!-- End Page-content -->
 
                 <!-- Transaction Modal -->
-                <div class="modal fade transaction-detailModal" tabindex="-1" role="dialog"
+                <!-- <div class="modal fade transaction-detailModal" tabindex="-1" role="dialog"
                     aria-labelledby="transaction-detailModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -245,7 +270,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- end modal -->
 
                 <!-- subscribeModal -->
@@ -292,63 +317,6 @@
 
     </div>
     <!-- END layout-wrapper -->
-
-    <!-- Right Sidebar -->
-    <div class="right-bar">
-        <div data-simplebar class="h-100">
-            <div class="rightbar-title d-flex align-items-center px-3 py-4">
-
-                <h5 class="m-0 me-2">Settings</h5>
-
-                <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
-                    <i class="mdi mdi-close noti-icon"></i>
-                </a>
-            </div>
-
-            <!-- Settings -->
-            <hr class="mt-0" />
-            <h6 class="text-center mb-0">Choose Layouts</h6>
-
-            <div class="p-4">
-                <div class="mb-2">
-                    <img src="assets/images/layouts/layout-1.jpg" class="img-thumbnail" alt="layout images">
-                </div>
-
-                <div class="form-check form-switch mb-3">
-                    <input class="form-check-input theme-choice" type="checkbox" id="light-mode-switch" checked>
-                    <label class="form-check-label" for="light-mode-switch">Light Mode</label>
-                </div>
-
-                <div class="mb-2">
-                    <img src="assets/images/layouts/layout-2.jpg" class="img-thumbnail" alt="layout images">
-                </div>
-                <div class="form-check form-switch mb-3">
-                    <input class="form-check-input theme-choice" type="checkbox" id="dark-mode-switch">
-                    <label class="form-check-label" for="dark-mode-switch">Dark Mode</label>
-                </div>
-
-                <div class="mb-2">
-                    <img src="assets/images/layouts/layout-3.jpg" class="img-thumbnail" alt="layout images">
-                </div>
-                <div class="form-check form-switch mb-3">
-                    <input class="form-check-input theme-choice" type="checkbox" id="rtl-mode-switch">
-                    <label class="form-check-label" for="rtl-mode-switch">RTL Mode</label>
-                </div>
-
-                <div class="mb-2">
-                    <img src="assets/images/layouts/layout-4.jpg" class="img-thumbnail" alt="layout images">
-                </div>
-                <div class="form-check form-switch mb-5">
-                    <input class="form-check-input theme-choice" type="checkbox" id="dark-rtl-mode-switch">
-                    <label class="form-check-label" for="dark-rtl-mode-switch">Dark RTL Mode</label>
-                </div>
-
-
-            </div>
-
-        </div> <!-- end slimscroll-menu-->
-    </div>
-    <!-- /Right-bar -->
 
     <!-- Right bar overlay-->
     <div class="rightbar-overlay"></div>
