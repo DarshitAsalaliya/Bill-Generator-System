@@ -13,10 +13,14 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
 // admin route
+const dashboardController = require('./controllers/dashboardController.js');
 const categoryController = require('./controllers/categoryController.js');
 
 // set public folder for admin
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/admin/category', express.static(path.join(__dirname, 'public')));
+
+app.use("/", dashboardController);
 app.use("/admin/category", categoryController);
 
 // port number
