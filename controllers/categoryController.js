@@ -69,39 +69,32 @@ router.post('/', upload.single('file'), function (req, res) {
     newCategory.CategoryName = req.body.CategoryName;
     newCategory.CategoryStatus = req.body.CategoryStatus == "on" ? true : false;
 
+    console.log(req.body);
+    console.log(req.file);
+
     if (!req.body.id) {
         newCategory.FileName = req.file.filename;
     }
     else {
         newCategory._id = req.body.id;
-        
-        if (req.file) {
-            CategoryModel.findById(req.body.id, function (err, singleCategoryData) {
-                if (err)
-                    console.log(err);
-                else {
+
+        CategoryModel.findById(req.body.id, function (err, singleCategoryData) {
+            if (err)
+                console.log(err);
+            else {
+                if (req.file) {
                     if (fs.existsSync(path.join('./public/images/categoryimages/', singleCategoryData.FileName))) {
-                        console.log(req.file);
                         fs.unlinkSync(path.join('./public/images/categoryimages/', singleCategoryData.FileName));
-                        newCategory.FileName = req.file.filename;
                     }
                 }
-            });
-        }
-        else
-        {
-            CategoryModel.findById(req.body.id, function (err, singleCategoryData) {
-                if (err)
-                    console.log(err);
-                else {
-                    newCategory.FileName = singleCategoryData.FileName;
-                }
-            });
+            }
+        });
+        if (req.file) {
+            newCategory.FileName = req.file.filename;
         }
     }
 
     if (req.body.operation == "update") {
-        console.log(newCategory);
         CategoryModel.findByIdAndUpdate(req.body.id, newCategory, function (err, data) {
             if (err)
                 console.log(err);
