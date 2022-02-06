@@ -1,6 +1,8 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
+require('dotenv').config()
+
 var app = express();
 
 // set body-parser
@@ -18,4 +20,4 @@ app.use('/admin/category', express.static(path.join(__dirname, 'public')));
 app.use("/admin/category", categoryController);
 
 // port number
-app.listen(8080);
+app.listen(process.env.PORT);
