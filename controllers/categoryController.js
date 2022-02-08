@@ -92,7 +92,7 @@ router.post('/', upload.single('file'), function (req, res) {
         var newCategory = new CategoryModel();
 
         newCategory.CategoryName = req.body.CategoryName;
-        newCategory.CategoryStatus = req.body.CategoryStatus == "on" ? true : false;
+        newCategory.Status = req.body.Status == "on" ? true : false;
 
         if (!req.body.id) {
             newCategory.FileName = req.file.filename;
