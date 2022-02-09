@@ -38,10 +38,24 @@ var connection = require("../db/connection");
 
 // import model
 var CategoryModel = require('../models/categoryModel');
-const { response } = require('express');
+
+// get category list using ajax
+// router.get('/getCategoryList', function (req, res) {
+//     CategoryModel.find(function (err, data) {
+//         if (err)
+//             console.log(err);
+//         else {
+//             res.json(data);
+//         }
+//     });
+// });
 
 // get category list
 router.get('/:id?', function (req, res) {
+
+    if (req.session.username == null)
+        res.redirect('/');
+
     var id = req.params.id;
 
     CategoryModel.find(function (err, data) {

@@ -6,12 +6,10 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Manage Category</title>
+    <title>Generate Bill</title>
 
     <%- include('config/datatablelinks'); %>
         <%- include('config/headerlinks'); %>
-
-
 
 </head>
 
@@ -45,11 +43,11 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Manage Product Category</h4>
+                                    <h4 class="mb-sm-0 font-size-18">Generate Bill</h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item active">Category</li>
+                                            <li class="breadcrumb-item active">Bill</li>
                                         </ol>
                                     </div>
 
@@ -57,132 +55,47 @@
                             </div>
                         </div>
                         <!-- end page title -->
-
-                        <div class="row">
-
-                            <div class="col-xl-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title mb-4">Category</h4>
-
-                                        <form method="post" action="/admin/category/" enctype="multipart/form-data">
-
-                                            <% if(categoryUpdateData.FileName){%>
-                                                <div class="row mb-4">
-                                                    <label for="horizontal-firstname-input"
-                                                        class="col-sm-3 col-form-label">
-
-                                                    </label>
-                                                    <div class="col-sm-9">
-                                                        <img src="images/categoryimages/<%= categoryUpdateData.FileName %>"
-                                                            style="width:50px;height:50px;" />
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" value="<%= categoryUpdateData.id %>" name="id" />
-                                                <input type="hidden" value="update" name="operation" />
-                                                <%} %>
-
-                                                    <div class="row mb-4">
-                                                        <label for="horizontal-firstname-input"
-                                                            class="col-sm-3 col-form-label">Image</label>
-                                                        <div class="col-sm-9">
-                                                            <input type="file" class="form-control" id="file"
-                                                                name="file" <%=categoryUpdateData.id?"":"required" %>>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-4">
-                                                        <label for="horizontal-firstname-input"
-                                                            class="col-sm-3 col-form-label">Category</label>
-                                                        <div class="col-sm-9">
-                                                            <font style="color: red;">
-                                                                <%= formDataError[0].context.label %>
-                                                            </font>
-                                                            <input type="text" class="form-control" id="CategoryName"
-                                                                name="CategoryName"
-                                                                value="<%= categoryUpdateData.CategoryName %>" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-4">
-                                                        <label for="horizontal-email-input"
-                                                            class="col-sm-3 col-form-label">Status</label>
-                                                        <div class="col-sm-9">
-                                                            <div class="form-check form-switch form-switch-lg mb-3 form-check-success"
-                                                                dir="ltr">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    id="Status" name="Status"
-                                                                    <%=categoryUpdateData.Status?"checked":""; %>>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row justify-content-end">
-                                                        <div class="col-sm-9">
-                                                            <div>
-                                                                <button type="submit" class="btn btn-primary w-md">
-                                                                    <%= categoryUpdateData.id?"Update":"Add" %>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                        </form>
-                                    </div>
-                                    <!-- end card body -->
-                                </div>
-                                <!-- end card -->
-                            </div>
-
-                            <div class="col-xl-8">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Category List</h4>
-
-                                        <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
-                                            <thead>
-                                                <tr>
-                                                    <th>Image</th>
-                                                    <th>Name</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                <% categoryList.forEach(function(record){ %>
+                        <form action="/admin/bill/print" method="post">
+                            <div class="row">
+                                <% productList.forEach(function(record){ %>
+                                    <div class="col-xl-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <table style="width:100%;">
                                                     <tr>
-                                                        <td>
-                                                            <img src="images/categoryimages/<%= record.FileName %>"
-                                                                style="width:50px;height:50px;" />
+                                                        <td style="width:30%;">
+                                                            <img src="images/productimages/<%= record.FileName %>"
+                                                                style="width:60px;height:60px;" />
                                                         </td>
-                                                        <td>
-                                                            <%= record.CategoryName %>
+                                                        <td style="width:50%;">
+                                                            <h6>
+                                                                <%= record.ProductName %>
+                                                            </h6>
+                                                            <p>
+                                                                <%= record.ProductSellPrice %> Rs.
+                                                            </p>
                                                         </td>
-                                                        <td>
-                                                            <% if(record.Status==true){ %>
-                                                                <span
-                                                                    class="badge badge-pill badge-soft-success font-size-11">Active</span>
-                                                                <% }else{ %>
-                                                                    <span
-                                                                        class="badge badge-pill badge-soft-danger font-size-11">Inactive</span>
-                                                                    <% } %>
-                                                        </td>
-                                                        <td>
-                                                            <a href="/admin/category/<%= record._id %>"
-                                                                class="btn btn-primary btn-sm"><span
-                                                                    class="bx bx-edit"></span></a>
-                                                            <a href="/admin/category/delete/<%= record._id %>"
-                                                                class="btn btn-danger btn-sm"><span
-                                                                    class="bx bx-trash"></span></a>
+                                                        <td style="width:20%;text-align: right;">
+                                                            <input type="hidden" name="selectedProductName" value="<%= record.ProductName %>" />
+                                                            <input type="hidden" name="selectedProductPrice" value="<%= record.ProductSellPrice %>" />
+                                                            <input class="form-control" type="text" value="0" name="selectedItemQty" />
                                                         </td>
                                                     </tr>
-                                                    <% }); %>
-                                            </tbody>
-
-                                        </table>
-
+                                                </table>
+                                            </div>
+                                            <!-- end card body -->
+                                        </div>
+                                        <!-- end card -->
                                     </div>
+                                    <% }); %>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-10"></div>
+                                <div class="col-xl-2">
+                                    <input type="submit" value="Generate Bill" class="btn btn-primary" />
                                 </div>
                             </div>
-
-                        </div>
+                        </form>
                         <!-- end row -->
 
                     </div>
@@ -334,16 +247,6 @@
 
         <%- include('config/datatablefooterlinks'); %>
 
-            <!-- <script>
-                $(document).ready(function () {
-                    $("#submit").click(function () {
-                        $.get("/admin/category/getCategoryList",{},
-                            function (data, status) {
-                                alert(data[0]);
-                            });
-                    });
-                });
-            </script> -->
 </body>
 
 

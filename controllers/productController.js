@@ -42,6 +42,10 @@ const CategoryModel = require('../models/categoryModel');
 
 // get category list
 router.get('/:id?', function (req, res) {
+
+    if (req.session.username == null)
+        res.redirect('/');
+
     var id = req.params.id;
 
     ProductModel.find(function (err, data) {

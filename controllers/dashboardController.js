@@ -15,9 +15,12 @@ var connection = require("../db/connection");
 // import model
 var CategoryModel = require('../models/categoryModel');
 
-// get category list
+// get cdashboard
 router.get('/', function (req, res) {
-   
+
+    if (req.session.username == null)
+        res.redirect('/');
+
     res.render('../views/admin/index', {
         totalCategory: 100,
         totalProduct: 200

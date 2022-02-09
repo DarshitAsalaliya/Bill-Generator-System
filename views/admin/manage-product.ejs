@@ -137,7 +137,9 @@
                                                                 name="ProductCategory">
                                                                 <option>Select</option>
                                                                 <% categoryList.forEach(function(record){ %>
-                                                                    <option value="<%= record._id %>" <%= record._id==productUpdateData.CategoryId?"selected":"" %>>
+                                                                    <option value="<%= record._id %>"
+                                                                        <%=record._id==productUpdateData.CategoryId?"selected":""
+                                                                        %>>
                                                                         <%= record.CategoryName %>
                                                                     </option>
                                                                     <% }) %>
