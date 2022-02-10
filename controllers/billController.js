@@ -39,7 +39,8 @@ var connection = require("../db/connection");
 
 // import model
 var ProductModel = require('../models/ProductModel');
-const CategoryModel = require('../models/categoryModel');
+var CategoryModel = require('../models/categoryModel');
+var BillModel = require('../models/billModel');
 
 // get category list
 router.get('/', function (req, res) {
@@ -74,6 +75,7 @@ router.post('/print', function (req, res) {
     selectedItemQty = [];
     selectedProductName = [];
     selectedProductPrice = [];
+    selectedProductCost = [];
     totalBillPrice = [];
 
     BillDetails = [];
@@ -81,6 +83,7 @@ router.post('/print', function (req, res) {
     for (var i = 0; i < req.body.selectedItemQty.length; i++) {
         if (req.body.selectedItemQty[i] > 0) {
             selectedProductName.push(req.body.selectedProductName[i]);
+            selectedProductCost.push(req.body.selectedProductCost[i]);
             selectedProductPrice.push(req.body.selectedProductPrice[i]);
             selectedItemQty.push(req.body.selectedItemQty[i]);
             totalBillPrice.push(req.body.selectedItemQty[i] * req.body.selectedProductPrice[i]);
@@ -91,8 +94,18 @@ router.post('/print', function (req, res) {
     BillDetails.push(selectedProductPrice);
     BillDetails.push(selectedItemQty);
     BillDetails.push(totalBillPrice);
+    BillDetails.push(req.body.billDate);
+    BillDetails.push(req.body.buyerName);
+    BillDetails.push(selectedProductCost);
 
-    console.log(BillDetails);
+    var newBill = new BillModel();
+
+    newBill.Bill = { Product: selectedProductName, ProductCost: selectedProductCost, ProductPrice: selectedProductPrice, Qty: selectedItemQty, TotalAmount: totalBillPrice };
+
+    newBill.save(function (err, data) {
+        if (err)
+            console.log(err);
+    });
 
     res.render('../views/admin/bill-print', {
         formDataError: [{

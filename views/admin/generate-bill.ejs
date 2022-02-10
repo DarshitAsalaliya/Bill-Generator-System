@@ -56,6 +56,18 @@
                         </div>
                         <!-- end page title -->
                         <form action="/admin/bill/print" method="post">
+
+                            <div class="row">
+
+                                <div class="col-xl-2">
+                                    Bill Date: <input type="date" class="form-control" name="billDate" />
+                                </div>
+                                <div class="col-xl-2">
+                                    Buyer Name: <input type="text" class="form-control" name="buyerName" />
+                                </div>
+
+                            </div>
+                            <br />
                             <div class="row">
                                 <% productList.forEach(function(record){ %>
                                     <div class="col-xl-3">
@@ -67,7 +79,7 @@
                                                             <img src="images/productimages/<%= record.FileName %>"
                                                                 style="width:60px;height:60px;" />
                                                         </td>
-                                                        <td style="width:50%;">
+                                                        <td style="width:48%;">
                                                             <h6>
                                                                 <%= record.ProductName %>
                                                             </h6>
@@ -75,10 +87,15 @@
                                                                 <%= record.ProductSellPrice %> Rs.
                                                             </p>
                                                         </td>
-                                                        <td style="width:20%;text-align: right;">
-                                                            <input type="hidden" name="selectedProductName" value="<%= record.ProductName %>" />
-                                                            <input type="hidden" name="selectedProductPrice" value="<%= record.ProductSellPrice %>" />
-                                                            <input class="form-control" type="text" value="0" name="selectedItemQty" />
+                                                        <td style="width:22%;text-align: right;">
+                                                            <input type="hidden" name="selectedProductName"
+                                                                value="<%= record.ProductName %>" />
+                                                            <input type="hidden" name="selectedProductCost"
+                                                                value="<%= record.ProductCost %>" />
+                                                            <input type="hidden" name="selectedProductPrice"
+                                                                value="<%= record.ProductSellPrice %>" />
+                                                            <input class="form-control" type="number" value="0"
+                                                                name="selectedItemQty" />
                                                         </td>
                                                     </tr>
                                                 </table>
