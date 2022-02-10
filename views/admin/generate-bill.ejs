@@ -58,12 +58,21 @@
                         <form action="/admin/bill/print" method="post">
 
                             <div class="row">
-
+                                
                                 <div class="col-xl-2">
-                                    Bill Date: <input type="date" class="form-control" name="billDate" />
+                                    Bill Date: <input type="date" class="form-control" id="billDate" name="billDate"
+                                        required />
                                 </div>
+                                <script>
+                                    var d = new Date();
+                                    if((d.getMonth() + 1)<10)
+                                        document.getElementById("billDate").defaultValue = d.getFullYear()+"-0"+(d.getMonth() + 1)+"-"+d.getDate();
+                                    else
+                                        document.getElementById("billDate").defaultValue = d.getFullYear()+"-"+(d.getMonth() + 1)+"-"+d.getDate();
+                                   
+                                </script>
                                 <div class="col-xl-2">
-                                    Buyer Name: <input type="text" class="form-control" name="buyerName" />
+                                    Buyer Name: <input type="text" class="form-control" name="buyerName" required />
                                 </div>
 
                             </div>
@@ -94,7 +103,7 @@
                                                                 value="<%= record.ProductCost %>" />
                                                             <input type="hidden" name="selectedProductPrice"
                                                                 value="<%= record.ProductSellPrice %>" />
-                                                            <input class="form-control" type="number" value="0"
+                                                            <input class="form-control" required type="number" value="0"
                                                                 name="selectedItemQty" />
                                                         </td>
                                                     </tr>
