@@ -14,16 +14,19 @@ var connection = require("../db/connection");
 
 // import model
 var CategoryModel = require('../models/categoryModel');
+//var ProductModel = require('../models/productModel');
+var BillModel = require('../models/billModel');
 
 // get cdashboard
 router.get('/', function (req, res) {
-
-    if (req.session.username == null)
-        res.redirect('/');
-
-    res.render('../views/admin/index', {
-        totalCategory: 100,
-        totalProduct: 200
+    CategoryModel.countDocuments({}, function (err, totalCategory) {
+        BillModel.countDocuments(function (err, totalBill) {
+            res.render('../views/admin/index', {
+                totalCategory: totalCategory,
+                totalProduct: 200,
+                totalBill: totalBill
+            });
+        });
     });
 })
 

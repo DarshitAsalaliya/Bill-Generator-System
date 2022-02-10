@@ -4,7 +4,7 @@ var multer = require('multer')
 var path = require('path');
 var Joi = require('joi');
 
-const fs = require('fs')
+const fs = require('fs');
 
 var app = express();
 var router = express.Router();
@@ -43,9 +43,6 @@ var BillModel = require('../models/billModel');
 
 // get category list
 router.get('/', function (req, res) {
-
-    if (req.session.username == null)
-        res.redirect('/');
 
     ProductModel.find(function (err, data) {
         if (err)
@@ -99,7 +96,7 @@ router.post('/print', function (req, res) {
 
     var newBill = new BillModel();
 
-    newBill.Bill = { Product: selectedProductName, ProductCost: selectedProductCost, ProductPrice: selectedProductPrice, Qty: selectedItemQty, TotalAmount: totalBillPrice };
+    newBill.Bill = { OrderDate: req.body.billDate, BuyerName: req.body.buyerName, Product: selectedProductName, ProductCost: selectedProductCost, ProductPrice: selectedProductPrice, Qty: selectedItemQty, TotalAmount: totalBillPrice };
 
     newBill.save(function (err, data) {
         if (err)
@@ -110,6 +107,23 @@ router.post('/print', function (req, res) {
         formDataError: [{
             context: { label: '' }
         }], orderedProductList: BillDetails
+    });
+})
+
+// get bill list
+router.get('/list', function (req, res) {
+
+    BillModel.find(function (err, data) {
+        console.log(data);
+        if (err)
+            console.log(err);
+        else {
+            res.render('../views/admin/bill-list', {
+                formDataError: [{
+                    context: { label: '' }
+                }], billList: data
+            });
+        }
     });
 })
 

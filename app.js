@@ -11,13 +11,21 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// set session
+// session middleware
+var checkIsLoggedIn = function isLoggedIn(req, res, next) {
+    if (req.session.username) {
+        next();
+    } else {
+        res.redirect('/');
+    }
+};
 
+// set session
 app.use(session({
     secret: 'AHJVFJGJ521HG84HJVGDHBBKJBE',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, maxAge:900000 }
+    cookie: { secure: false, maxAge: 900000 }
 }))
 
 // set the view engine to ejs
@@ -36,11 +44,12 @@ app.use('/admin/category', express.static(path.join(__dirname, 'public')));
 app.use('/admin/product', express.static(path.join(__dirname, 'public')));
 app.use('/admin/bill', express.static(path.join(__dirname, 'public')));
 
+// controller
 app.use("/", loginController);
-app.use("/admin", dashboardController);
-app.use("/admin/category", categoryController);
-app.use("/admin/product", productController);
-app.use("/admin/bill", billController);
+app.use("/admin", checkIsLoggedIn, dashboardController);
+app.use("/admin/category", checkIsLoggedIn, categoryController);
+app.use("/admin/product", checkIsLoggedIn, productController);
+app.use("/admin/bill", checkIsLoggedIn, billController);
 
 // port number
 app.listen(process.env.PORT);
