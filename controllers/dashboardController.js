@@ -17,7 +17,7 @@ var CategoryModel = require('../models/categoryModel');
 //var ProductModel = require('../models/productModel');
 var BillModel = require('../models/billModel');
 
-// get cdashboard
+// get dashboard
 router.get('/', function (req, res) {
     CategoryModel.countDocuments({}, function (err, totalCategory) {
         BillModel.countDocuments(function (err, totalBill) {
