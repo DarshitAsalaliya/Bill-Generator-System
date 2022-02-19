@@ -1,6 +1,6 @@
-var express = require('express')
+var express = require('express');
 var mongoose = require('mongoose');
-var multer = require('multer')
+var multer = require('multer');
 var path = require('path');
 var Joi = require('joi');
 

@@ -37,7 +37,7 @@ var upload = multer({
 var connection = require("../db/connection");
 
 // import model
-var ProductModel = require('../models/ProductModel');
+var ProductModel = require('../models/productModel');
 const CategoryModel = require('../models/categoryModel');
 
 // get category list

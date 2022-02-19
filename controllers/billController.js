@@ -37,7 +37,7 @@ var upload = multer({
 var connection = require("../db/connection");
 
 // import model
-var ProductModel = require('../models/ProductModel');
+var ProductModel = require('../models/productModel');
 var CategoryModel = require('../models/categoryModel');
 var BillModel = require('../models/billModel');
 

@@ -14,17 +14,19 @@ var connection = require("../db/connection");
 
 // import model
 var CategoryModel = require('../models/categoryModel');
-//var ProductModel = require('../models/productModel');
+var ProductModel = require('../models/productModel');
 var BillModel = require('../models/billModel');
 
 // get dashboard
 router.get('/', function (req, res) {
     CategoryModel.countDocuments({}, function (err, totalCategory) {
         BillModel.countDocuments(function (err, totalBill) {
-            res.render('../views/admin/index', {
-                totalCategory: totalCategory,
-                totalProduct: 200,
-                totalBill: totalBill
+            ProductModel.countDocuments(function (err, totalProduct) {
+                res.render('../views/admin/index', {
+                    totalCategory: totalCategory,
+                    totalProduct: totalProduct,
+                    totalBill: totalBill
+                });
             });
         });
     });

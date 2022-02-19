@@ -81,7 +81,8 @@
                                                             <%= record.Bill.BuyerName %>
                                                         </td>
                                                         <td>
-                                                            <table class="table table-bordered dt-responsive  nowrap w-100">
+                                                            <table
+                                                                class="table table-bordered dt-responsive  nowrap w-100">
                                                                 <thead>
                                                                     <tr>
                                                                         <th>Product</th>
@@ -91,46 +92,39 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr>
-                                                                        <% record.Bill.Product.forEach(function(product){
 
-                                                                            BillAmount = 0;
-
-                                                                            %>
+                                                                    <% BillAmount=0; for (let index=0; index <
+                                                                        record.Bill.Product.length; index++) {
+                                                                        BillAmount+=record.Bill.TotalAmount[index]; %>
+                                                                        <tr>
                                                                             <td>
-                                                                                <%= product %>
+                                                                                <%= record.Bill.Product[index] %>
                                                                             </td>
-                                                                            <% }); %>
+                                                                            <td>
+                                                                                <%= record.Bill.Qty[index] %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= record.Bill.ProductPrice[index] %>
+                                                                            </td>
+                                                                            <td>
+                                                                                <%= record.Bill.TotalAmount[index] %>
+                                                                            </td>
+                                                                        </tr>
 
-                                                                                <% record.Bill.Qty.forEach(function(productqty){
-                                                                                    %>
-                                                                                    <td>
-                                                                                        <%= productqty %>
-                                                                                    </td>
-                                                                                    <% }); %>
+                                                                        <% } %>
 
-                                                                                        <% record.Bill.ProductPrice.forEach(function(productprice){
-                                                                                            %>
-                                                                                            <td>
-                                                                                                <%= productprice %>
-                                                                                            </td>
-                                                                                            <% }); %>
-
-                                                                                                <% record.Bill.TotalAmount.forEach(function(totalamount){
-                                                                                                    BillAmount+=totalamount;
-                                                                                                    %>
-                                                                                                    <td>
-                                                                                                        <%= totalamount
-                                                                                                            %>
-                                                                                                    </td>
-                                                                                                    <% }); %>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td></td>
-                                                                        <td></td>
-                                                                        <td><b>Total</b></td>
-                                                                        <td><b><%= BillAmount %></b></td>
-                                                                    </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                </td>
+                                                                                <td>
+                                                                                </td>
+                                                                                <td><b>Total</b>
+                                                                                </td>
+                                                                                <td><b>
+                                                                                        <%= BillAmount %>
+                                                                                    </b>
+                                                                                </td>
+                                                                            </tr>
 
                                                                 </tbody>
                                                             </table>
