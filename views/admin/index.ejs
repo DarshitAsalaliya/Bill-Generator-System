@@ -141,7 +141,9 @@
                                                 <div class="d-flex">
                                                     <div class="flex-grow-1">
                                                         <p class="text-muted fw-medium">Total Category</p>
-                                                        <h4 class="mb-0"><%= totalCategory %></h4>
+                                                        <h4 class="mb-0">
+                                                            <%= totalCategory %>
+                                                        </h4>
                                                     </div>
 
                                                     <div class="flex-shrink-0 align-self-center">
@@ -161,7 +163,9 @@
                                                 <div class="d-flex">
                                                     <div class="flex-grow-1">
                                                         <p class="text-muted fw-medium">Total Product</p>
-                                                        <h4 class="mb-0"><%= totalProduct %></h4>
+                                                        <h4 class="mb-0">
+                                                            <%= totalProduct %>
+                                                        </h4>
                                                     </div>
 
                                                     <div class="flex-shrink-0 align-self-center ">
@@ -181,13 +185,73 @@
                                                 <div class="d-flex">
                                                     <div class="flex-grow-1">
                                                         <p class="text-muted fw-medium">Total Bill</p>
-                                                        <h4 class="mb-0"><%= totalBill %></h4>
+                                                        <h4 class="mb-0">
+                                                            <%= totalBill %>
+                                                        </h4>
                                                     </div>
 
                                                     <div class="flex-shrink-0 align-self-center ">
                                                         <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
                                                             <span class="avatar-title rounded-circle bg-primary">
-                                                                <i class="bx bx-paste font-size-24"></i>
+                                                                <i class="bx bx-task font-size-24"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card mini-stats-wid">
+                                            <div class="card-body">
+                                                <div class="d-flex">
+                                                    <div class="flex-grow-1">
+                                                        <p class="text-muted fw-medium">Total Profit</p>
+                                                        <h4 class="mb-0">
+
+                                                            <% TotalProductCost=0;TotalAmount=0;
+                                                                billList.forEach(element=> {
+
+                                                                TempTotalProductCost = 0;
+                                                                TempTotalAmount = 0
+
+                                                                element.Bill.ProductCost.forEach((x,index)=>{
+
+                                                                TempTotalProductCost += (Number(x) *
+                                                                element.Bill.Qty[index]);
+
+                                                                })
+
+                                                                element.Bill.TotalAmount.forEach(x=>{
+
+                                                                TempTotalAmount += Number(x)
+
+                                                                })
+
+                                                                TotalProductCost += TempTotalProductCost
+                                                                TotalAmount += TempTotalAmount
+
+                                                                %>
+                                                                <% }); ProfitLoss=TotalAmount-TotalProductCost %>
+
+                                                                    <% if(ProfitLoss>0){
+                                                                        %>
+                                                                        <font style="color:green;">
+                                                                            <%= ProfitLoss %> Rs.
+                                                                        </font>
+                                                                        <% }else {%>
+                                                                            <font style="color:red;">
+                                                                                <%= ProfitLoss %> Rs.
+                                                                            </font>
+                                                                            <% } %>
+
+                                                        </h4>
+                                                    </div>
+
+                                                    <div class="flex-shrink-0 align-self-center ">
+                                                        <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
+                                                            <span class="avatar-title rounded-circle bg-primary">
+                                                                <i class="bx bx-aperture font-size-24"></i>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -603,7 +667,7 @@
     <!-- END layout-wrapper -->
 
     <!-- Right Sidebar -->
-    
+
     <!-- /Right-bar -->
 
     <!-- Right bar overlay-->

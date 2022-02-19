@@ -98,16 +98,22 @@ router.post('/print', function (req, res) {
 
     newBill.Bill = { OrderDate: req.body.billDate, BuyerName: req.body.buyerName, Product: selectedProductName, ProductCost: selectedProductCost, ProductPrice: selectedProductPrice, Qty: selectedItemQty, TotalAmount: totalBillPrice };
 
-    newBill.save(function (err, data) {
+    newBill.save(function (err, billData) {
         if (err)
             console.log(err);
+        else {
+            res.render('../views/admin/bill-print', {
+                formDataError: [{
+                    context: { label: '' }
+                }], orderedProductList: BillDetails,
+                BillNo: billData._id
+            });
+        }
+
     });
 
-    res.render('../views/admin/bill-print', {
-        formDataError: [{
-            context: { label: '' }
-        }], orderedProductList: BillDetails
-    });
+
+
 })
 
 // get bill list
@@ -124,6 +130,17 @@ router.get('/list', function (req, res) {
                 }], billList: data
             });
         }
+    });
+})
+
+// delete category
+router.get('/delete/:id', function (req, res) {
+
+    BillModel.findByIdAndRemove(req.params.id, function (err, data) {
+        if (err)
+            console.log(err);
+        else
+            res.redirect('/admin/bill/list');
     });
 })
 

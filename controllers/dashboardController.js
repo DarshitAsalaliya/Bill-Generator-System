@@ -20,12 +20,13 @@ var BillModel = require('../models/billModel');
 // get dashboard
 router.get('/', function (req, res) {
     CategoryModel.countDocuments({}, function (err, totalCategory) {
-        BillModel.countDocuments(function (err, totalBill) {
+        BillModel.find(function (err, billData) {
             ProductModel.countDocuments(function (err, totalProduct) {
                 res.render('../views/admin/index', {
                     totalCategory: totalCategory,
                     totalProduct: totalProduct,
-                    totalBill: totalBill
+                    totalBill: billData.length,
+                    billList: billData
                 });
             });
         });
